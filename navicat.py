@@ -5,7 +5,6 @@ import glob
 import sys
 import time
 
-import pyautogui
 from kdotool import Kdotool
 from querywindow import queryWindowInfo
 kdotool = Kdotool(bin=os.path.expanduser("~/.local/bin/kdotool"))
