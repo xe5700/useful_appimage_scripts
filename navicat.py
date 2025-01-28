@@ -11,7 +11,7 @@ from querywindow import queryWindowInfo
 kdotool = Kdotool(bin=os.path.expanduser("~/.local/bin/kdotool"))
 def find_latest_appimage(directory, base_name):
     # 查找所有的 .AppImage 文件
-    appimage_files = glob.glob(os.path.join(directory, f"{base_name}*-premium-cs.AppImage"))
+    appimage_files = glob.glob(os.path.join(directory, f"{base_name}*-premium-cs*.AppImage"))
     
     if not appimage_files:
         print("没有找到任何 .AppImage 文件")
@@ -28,9 +28,11 @@ def find_latest_appimage(directory, base_name):
 def run_appimage(appimage_path, args):
     # 运行 .AppImage 文件并传递命令行参数
     try:
+        os.system("dconf reset -f /com/premiumsoft/navicat-premium/")
+        os.system("sed -i -E 's/,?\"([A-Z0-9]+)\":\{([^\}]+)},?//g' ~/.config/navicat/Premium/preferences.json")
         p = subprocess.Popen([appimage_path] + args)
         time.sleep(2)
-        for i in range(20): 
+        for i in range(10): 
             try:
                 window_id = kdotool.search("注册",{"--name": True})
                 if window_id and len(window_id) > 0:
